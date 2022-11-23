@@ -8,13 +8,17 @@ import 'package:instagram/modules/user.dart' as Modules;
 class AuthMethods{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  // this is getting user details from firebase
+  // this is only use for get user details from database
+  // this is connect with provider refresh function and ChangeNotifier
+    
     // this is used for sign or register new user account on the application database 
   Future<String> signUpUser({
        required String name,
        required String email,
        required String username,
        required String password,
-       Uint8List? images,
+       required Uint8List? file,
     })async{
       String result = 'Email address is already sign Up';
        try{
@@ -22,7 +26,9 @@ class AuthMethods{
           name.isNotEmpty || 
           email.isNotEmpty || 
           username.isNotEmpty || 
-          password.isNotEmpty){
+          password.isNotEmpty ||
+          file !=null
+          ){
             
             UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
             
@@ -32,7 +38,7 @@ class AuthMethods{
               email:email,
               username:username,
               password:password,
-              photoUrl:'',
+              photoUrl:file.toString(),
               followers:[],
               following:[],
 

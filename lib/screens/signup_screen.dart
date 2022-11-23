@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/responsive/mobile_layout.dart';
 import 'package:instagram/responsive/responsive_layout.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/main_screen.dart';
+import 'package:instagram/utils/globla_variables.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_type_input.dart';
 
 import '../responsive/web_layout.dart';
@@ -21,7 +25,7 @@ class SignUpScreenState extends State<SignUpScreen>{
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isLoading =false;
-  
+  Uint8List? image;
 
   @override
   void dispose(){
@@ -30,6 +34,7 @@ class SignUpScreenState extends State<SignUpScreen>{
      emailController.dispose();
      usernameController.dispose();
      passwordController.dispose();
+  
   }
 
    Future<void> signUp() async{
@@ -40,7 +45,8 @@ class SignUpScreenState extends State<SignUpScreen>{
         name:nameController.text, 
         email:emailController.text, 
         username: usernameController.text, 
-        password: passwordController.text
+        password: passwordController.text,
+        file:image!
       );
 
       if(result =='success'){
@@ -49,9 +55,9 @@ class SignUpScreenState extends State<SignUpScreen>{
          });
 
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            Navigator.pushReplacement(context,MaterialPageRoute(builder:((context) => const ResponsiveLayout(
+            Navigator.pushReplacement(context,MaterialPageRoute(builder:((context) => ResponsiveLayout(
               webLayout:WebLayout(), 
-              mobileLayout:MobileLayout()
+              mobileLayout:MobileLayout(),
             ))));
           });
       }else{
@@ -59,9 +65,20 @@ class SignUpScreenState extends State<SignUpScreen>{
            isLoading =false;
          });
 
-         print(result.toString());
+      // ignore: use_build_context_synchronously
+      showSnackBar(context,result.toString());
+
       }
     }
+    
+    void selectImage() async{
+       Uint8List imgUrl = imagePick(ImageSource.gallery);
+
+       setState(() {
+          image=imgUrl;
+       });
+    }
+    
   @override
   Widget build(BuildContext context)=>Scaffold(
     body:Container(
@@ -80,11 +97,20 @@ class SignUpScreenState extends State<SignUpScreen>{
           ),
           const SizedBox(height:64,),
           Stack(
-            children: const[
+            children:[
                CircleAvatar(
                 radius:64,
                 backgroundColor:Colors.white,
+                backgroundImage:MemoryImage(image!),
                ),
+               Positioned(
+                right:2,
+                bottom:1,
+                child:IconButton(
+                  onPressed:selectImage,
+                  icon:const Icon(Icons.add_a_photo_outlined,color:Colors.grey,size:30,)
+                ),
+               )
             ],
           ),
           const SizedBox(height:24),

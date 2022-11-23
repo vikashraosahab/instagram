@@ -34,4 +34,21 @@ class User{
         'following':following,
       };
     }
+
+    // this is for getUserDetails  function 
+    // this is used for getting value from firebase with help of providers and snapshot
+
+    static User fromSnap(DocumentSnapshot snap){
+       final Snapshot =snap.data() as Map<String,dynamic>;
+        return User(
+          userId:Snapshot['userId'],
+          name:Snapshot['name'], 
+          email:Snapshot['email'], 
+          username:Snapshot['username'], 
+          password:Snapshot['password'], 
+          photoUrl:Snapshot['photoUrl'], 
+          followers:Snapshot['followers'], 
+          following:Snapshot['following']
+        );
+    }
 }

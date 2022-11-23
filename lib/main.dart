@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/screens/splash_screen.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:provider/provider.dart';
+
+import 'modules/user.dart';
 
 
 void main() async{ 

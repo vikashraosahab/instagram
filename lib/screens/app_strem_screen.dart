@@ -22,9 +22,9 @@ class AppStreamScreenState extends State<AppStreamScreen>{
         if(snapshot.connectionState == ConnectionState.active){
           // this work when your connection is active with firebase 
            if(snapshot.hasData){
-             return  const ResponsiveLayout(
+             return ResponsiveLayout(
+              webLayout:const WebLayout(),
               mobileLayout:MobileLayout(),
-              webLayout:WebLayout(),
              );
            }else if(snapshot.hasError){
              return Center(
