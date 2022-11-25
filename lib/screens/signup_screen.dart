@@ -55,7 +55,7 @@ class SignUpScreenState extends State<SignUpScreen>{
          });
 
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            Navigator.pushReplacement(context,MaterialPageRoute(builder:((context) => ResponsiveLayout(
+            Navigator.pushReplacement(context,MaterialPageRoute(builder:((context) =>const ResponsiveLayout(
               webLayout:WebLayout(), 
               mobileLayout:MobileLayout(),
             ))));
@@ -72,7 +72,7 @@ class SignUpScreenState extends State<SignUpScreen>{
     }
     
     void selectImage() async{
-       Uint8List imgUrl = imagePick(ImageSource.gallery);
+       Uint8List imgUrl = await imagePick(ImageSource.gallery);
 
        setState(() {
           image=imgUrl;
@@ -82,14 +82,13 @@ class SignUpScreenState extends State<SignUpScreen>{
   @override
   Widget build(BuildContext context)=>Scaffold(
     body:Container(
-       margin:const EdgeInsets.only(top:10,bottom:10),
-       padding:const EdgeInsets.symmetric(horizontal:32),
+       padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width /3): const EdgeInsets.symmetric(horizontal:32),
       child:Column(
         crossAxisAlignment:CrossAxisAlignment.center,
         children:[
           Flexible(flex:2,child:Container()),
           Container(
-            padding:const EdgeInsets.symmetric(horizontal:32),
+           padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width /3): const EdgeInsets.symmetric(horizontal:32),
             child:Image.asset(
               'lib/assets/instagram-text.png',
               color:Colors.white,
@@ -98,10 +97,14 @@ class SignUpScreenState extends State<SignUpScreen>{
           const SizedBox(height:64,),
           Stack(
             children:[
-               CircleAvatar(
-                radius:64,
+               image !=null ? CircleAvatar(
+                radius:45,
                 backgroundColor:Colors.white,
                 backgroundImage:MemoryImage(image!),
+               ) : const CircleAvatar(
+                  radius:45,
+                  backgroundColor:Colors.white,
+                  backgroundImage:NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
                ),
                Positioned(
                 right:2,

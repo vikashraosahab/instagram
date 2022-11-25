@@ -1,14 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/screens/splash_screen.dart';
 import 'package:instagram/utils/colors.dart';
-import 'package:provider/provider.dart';
 
-import 'modules/user.dart';
 
 
 void main() async{ 
@@ -21,6 +18,8 @@ void main() async{
           apiKey:"AIzaSyBeT5bNNalwHZBwax9Xc4LlaWjFQVPDy4g", 
           appId:"1:606237185103:web:1406c96bc83c68a36ec63a",
           messagingSenderId:"606237185103",
+          authDomain: "instagram-ed76e.firebaseapp.com",
+          storageBucket: "instagram-ed76e.appspot.com",
           projectId:"instagram-ed76e",
         ),
       );
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner:false,
       theme:ThemeData.dark().copyWith(
-        scaffoldBackgroundColor:backGroundColor,
+        scaffoldBackgroundColor:mobileBackgroundColor,
       ),
       home:const SplashScreen(),
       routes:{

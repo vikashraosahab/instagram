@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instagram/modules/user.dart' as Modules;
+import 'package:instagram/resources/storage_methods.dart';
 
 class AuthMethods{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -32,13 +33,15 @@ class AuthMethods{
             
             UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
             
+           String photo = await StorageMethods().uploadImgToStorgage('profile',file!,false);
+
             Modules.User users =Modules.User(
               userId:cred.user!.uid,
               name:name,
               email:email,
               username:username,
               password:password,
-              photoUrl:file.toString(),
+              photoUrl:photo,
               followers:[],
               following:[],
 
