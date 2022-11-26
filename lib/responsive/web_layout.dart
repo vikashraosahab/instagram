@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/utils/colors.dart';
 
 class WebLayout extends StatefulWidget{
   const WebLayout({super.key});
@@ -7,49 +8,86 @@ class WebLayout extends StatefulWidget{
 }
 
 class WebLayoutState extends State<WebLayout>{
+  int page=0;
+  late PageController pageController;
+  @override
+   void initState(){
+     super.initState();
+     pageController = PageController();
+   }
+
+   
+   @override 
+     void dispose(){
+      super.dispose();
+       pageController.dispose();
+     }
+
+     void navigateTo(int value){
+      pageController.jumpToPage(page);
+      setState(() {
+         page=value;
+      });
+     }
+     
+     onPageChanged(int index){
+      setState(() {
+         page=index;
+      });
+     }
    @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
+        automaticallyImplyLeading:false,
         title:Image.asset(
           'lib/assets/instagram-text.png',
           height:32,
+          color: primaryColor,
        ),
-        actions: [
+        actions:<IconButton>[
           IconButton(
-            onPressed:(){}, 
-            icon:Icon(
+            onPressed:()=>navigateTo(0),
+            icon:const Icon(
               Icons.home,
             ),
            ),
            IconButton(
-            onPressed:(){}, 
+            onPressed:()=>navigateTo(1),
             icon:Icon(
-              Icons.home,
+              Icons.search,
+              color:page == 1 ? primaryColor : secondaryColor,
             ),
            ),
            IconButton(
-            onPressed:(){}, 
-            icon:Icon(
-              Icons.home,
+            onPressed:()=>navigateTo(2),
+            icon:const Icon(
+              Icons.add_circle,
             ),
            ),
            IconButton(
-            onPressed:(){}, 
-            icon:Icon(
-              Icons.home,
+            onPressed:()=>navigateTo(3),
+            icon:const Icon(
+              Icons.favorite,
             ),
            ),
            IconButton(
-            onPressed:(){}, 
-            icon:Icon(
-              Icons.home,
+            onPressed:()=>navigateTo(4),
+            icon:const Icon(
+              Icons.person,
             ),
            )
         ],
       ),
-      body:Center(
-        child:Text('This is web layout'),
+      body:PageView(
+        children: [
+          Text('hello world vy cikash'),
+          Text(page.toString()),
+          Text('zero to one'),
+        ],
+        physics:const NeverScrollableScrollPhysics(),
+        controller:pageController,
+        onPageChanged:onPageChanged,
       ),
     );
   }

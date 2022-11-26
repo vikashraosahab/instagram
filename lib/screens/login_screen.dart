@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/screens/signup_screen.dart';
+import 'package:instagram/utils/globla_variables.dart';
 import 'package:instagram/widgets/text_type_input.dart';
 
 class LogInScreen extends StatefulWidget{
@@ -48,7 +49,7 @@ class LogInScreenState extends State<LogInScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       body:Container(
-       padding:const EdgeInsets.symmetric(horizontal:32),
+       padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width /2.8):  EdgeInsets.symmetric(horizontal:32),
        margin:const EdgeInsets.only(top:10,bottom:10),
         child:Column(
           crossAxisAlignment:CrossAxisAlignment.center,
@@ -58,7 +59,7 @@ class LogInScreenState extends State<LogInScreen>{
               child:Container()
             ),
             Container(
-              padding:const EdgeInsets.symmetric(horizontal:32),
+             padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width / 18): const EdgeInsets.symmetric(horizontal:32),
               child:Image.asset(
                 'lib/assets/instagram-text.png',
                 color:Colors.white,

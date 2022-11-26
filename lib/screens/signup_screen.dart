@@ -82,19 +82,19 @@ class SignUpScreenState extends State<SignUpScreen>{
   @override
   Widget build(BuildContext context)=>Scaffold(
     body:Container(
-       padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width /3): const EdgeInsets.symmetric(horizontal:32),
+      padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width /2.8): const EdgeInsets.symmetric(horizontal:32),
       child:Column(
         crossAxisAlignment:CrossAxisAlignment.center,
         children:[
           Flexible(flex:2,child:Container()),
           Container(
-           padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width /3): const EdgeInsets.symmetric(horizontal:32),
+           padding:MediaQuery.of(context).size.width > webScreenSize ? EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width / 14): const EdgeInsets.symmetric(horizontal:32),
             child:Image.asset(
               'lib/assets/instagram-text.png',
               color:Colors.white,
             ),
           ),
-          const SizedBox(height:64,),
+          const SizedBox(height:12,),
           Stack(
             children:[
                image !=null ? CircleAvatar(
