@@ -73,7 +73,6 @@ class SignUpScreenState extends State<SignUpScreen>{
     
     void selectImage() async{
        Uint8List imgUrl = await imagePick(ImageSource.gallery);
-
        setState(() {
           image=imgUrl;
        });
@@ -107,8 +106,8 @@ class SignUpScreenState extends State<SignUpScreen>{
                   backgroundImage:NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
                ),
                Positioned(
-                right:2,
-                bottom:1,
+                right:1,
+                bottom:0,
                 child:IconButton(
                   onPressed:selectImage,
                   icon:const Icon(Icons.add_a_photo_outlined,color:Colors.grey,size:30,)

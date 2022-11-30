@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/globla_variables.dart';
 
 class WebLayout extends StatefulWidget{
   const WebLayout({super.key});
@@ -39,10 +40,11 @@ class WebLayoutState extends State<WebLayout>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
+        backgroundColor:mobileBackgroundColor,
         automaticallyImplyLeading:false,
         title:Image.asset(
           'lib/assets/instagram-text.png',
-          height:32,
+          height:40,
           color: primaryColor,
        ),
         actions:<IconButton>[
@@ -80,14 +82,10 @@ class WebLayoutState extends State<WebLayout>{
         ],
       ),
       body:PageView(
-        children: [
-          Text('hello world vy cikash'),
-          Text(page.toString()),
-          Text('zero to one'),
-        ],
         physics:const NeverScrollableScrollPhysics(),
         controller:pageController,
         onPageChanged:onPageChanged,
+        children:applicationPages,
       ),
     );
   }

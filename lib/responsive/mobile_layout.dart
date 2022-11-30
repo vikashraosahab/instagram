@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/globla_variables.dart';
 
 
 class MobileLayout extends StatefulWidget{
@@ -39,21 +40,10 @@ class MobileLayoutState extends State<MobileLayout>{
   Widget build(BuildContext context) {
     return Scaffold(
       body:PageView(
-        children: [
-         Center(child:InkWell(
-          onTap:() async{
-             await AuthMethods().signOut();
-          },
-          child:Text('there is no part of living things'),
-         )),
-         Text('akash yadav'),
-         Text('Hello vikash yadav from Azamgarh'),
-         Text('zerodha'),
-         Text('i am vikash yadav'),
-        ],
         physics:const NeverScrollableScrollPhysics(),
         controller:pageController,
         onPageChanged:onPageChanged,
+        children:applicationPages,
       ),
       bottomNavigationBar:CupertinoTabBar(
         backgroundColor:mobileBackgroundColor,
