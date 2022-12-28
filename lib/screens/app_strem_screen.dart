@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/responsive/mobile_layout.dart';
 import 'package:instagram/responsive/responsive_layout.dart';
 import 'package:instagram/responsive/web_layout.dart';
-import 'package:instagram/screens/main_screen.dart';
+import 'package:instagram/screens/home_screen.dart';
 
 import 'login_screen.dart';
 
@@ -22,8 +22,8 @@ class AppStreamScreenState extends State<AppStreamScreen>{
         if(snapshot.connectionState == ConnectionState.active){
           // this work when your connection is active with firebase 
            if(snapshot.hasData){
-             return ResponsiveLayout(
-              webLayout:const WebLayout(),
+             return const ResponsiveLayout(
+              webLayout: WebLayout(),
               mobileLayout:MobileLayout(),
              );
            }else if(snapshot.hasError){

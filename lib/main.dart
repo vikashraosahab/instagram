@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:instagram/providers/user_provider.dart';
+import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/screens/splash_screen.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -15,12 +18,12 @@ void main() async{
       // this only work when your screen is not a mobile or other small screens
       await Firebase.initializeApp(
         options:const FirebaseOptions(
-          apiKey:"AIzaSyBeT5bNNalwHZBwax9Xc4LlaWjFQVPDy4g", 
-          appId:"1:606237185103:web:1406c96bc83c68a36ec63a",
-          messagingSenderId:"606237185103",
-          authDomain: "instagram-ed76e.firebaseapp.com",
-          storageBucket: "instagram-ed76e.appspot.com",
-          projectId:"instagram-ed76e",
+          apiKey: "AIzaSyA0JHTG-XfBplBvuAAbDFjidJUHIYWJOgA",
+          authDomain: "instagram-4fbd7.firebaseapp.com",
+          projectId: "instagram-4fbd7",
+          storageBucket: "instagram-4fbd7.appspot.com",
+          messagingSenderId: "851828105395",
+          appId: "1:851828105395:web:a613328cbd7d13742950c6"
         ),
       );
     }else {
@@ -36,7 +39,12 @@ class MyApp extends StatelessWidget{
    const MyApp({super.key});
    @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+      providers:[
+       ChangeNotifierProvider(
+        create:((context) => UserProvider())),
+      ],
+      child: MaterialApp(
       debugShowCheckedModeBanner:false,
       theme:ThemeData.dark().copyWith(
         scaffoldBackgroundColor:mobileBackgroundColor,
@@ -44,8 +52,9 @@ class MyApp extends StatelessWidget{
       home:const SplashScreen(),
       routes:{
         SignUpScreen.routeName:(context)=> const SignUpScreen(),
-        LogInScreen.routeName:(context) => const  LogInScreen(),
+        LogInScreen.routeName:(context) => const LogInScreen(),
+        HomeScreen.routeName:(context) => const HomeScreen(),
       },
-    );
+    ));
   }
 }

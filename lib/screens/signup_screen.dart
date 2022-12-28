@@ -5,7 +5,7 @@ import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/responsive/mobile_layout.dart';
 import 'package:instagram/responsive/responsive_layout.dart';
 import 'package:instagram/screens/login_screen.dart';
-import 'package:instagram/screens/main_screen.dart';
+import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/utils/globla_variables.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_type_input.dart';

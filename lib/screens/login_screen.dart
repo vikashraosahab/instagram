@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/utils/globla_variables.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_type_input.dart';
 
 class LogInScreen extends StatefulWidget{
@@ -37,6 +38,9 @@ class LogInScreenState extends State<LogInScreen>{
       setState(() {
         isLoading=false;
       });
+
+      // ignore: use_build_context_synchronously
+      showSnackBar(context,result.toString());
     }
   }
 

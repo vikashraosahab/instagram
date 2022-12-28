@@ -51,4 +51,5 @@ class User{
           following:Snapshot['following']
         );
     }
+
 }

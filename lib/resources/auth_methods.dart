@@ -12,7 +12,13 @@ class AuthMethods{
   // this is getting user details from firebase
   // this is only use for get user details from database
   // this is connect with provider refresh function and ChangeNotifier
-    
+    Future<Modules.User> getUserDetails() async{
+        User currentUser = firebaseAuth.currentUser!;
+
+         DocumentSnapshot snap = await firebaseFirestore.collection('userCollection').doc(currentUser.uid).get();
+
+         return Modules.User.fromSnap(snap);
+     }
     // this is used for sign or register new user account on the application database 
   Future<String> signUpUser({
        required String name,
