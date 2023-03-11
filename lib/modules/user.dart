@@ -1,15 +1,16 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
 class User{
+  final String uid;
   final String name;
   final String email;
   final String password;
   final String username;
-  final Uint8List? image;
+  final String image;
 
    User({
+    required this.uid,
     required this.name,
     required this.email,
     required this.password,
@@ -18,6 +19,7 @@ class User{
    });
 
   Map <String,dynamic> toJson()=>{
+     "uid":uid,
      "name":name,
      "email":email,
      "password":password,

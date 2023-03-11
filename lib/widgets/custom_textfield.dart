@@ -22,13 +22,9 @@ class CustomTextField extends StatelessWidget{
          controller:textEditingController,
          decoration:InputDecoration(
           hintText:hintText,
-          hintStyle:const TextStyle(
-            color:Colors.white,
-          ),
           border:inputBorder,
           focusedBorder:inputBorder,
           errorBorder:inputBorder,
-          fillColor:const Color.fromARGB(255, 65, 64, 64),
           filled:true,
           contentPadding:const EdgeInsets.all(16),
           
