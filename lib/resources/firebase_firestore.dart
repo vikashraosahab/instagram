@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instagram/modules/post.dart' as Module; 
@@ -31,7 +30,7 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
         likes:[],
         profileImage:profile
       );
-    firebaseFirestore.collection('posts').doc(FirebaseAuth.instance.currentUser!.uid).set(post.toJson());
+    firebaseFirestore.collection('posts').doc(postId).set(post.toJson());
     result ='Success';
      }catch(e){
        print(e.toString());
@@ -39,27 +38,6 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
      return result;
    }
-  // like post etc
-   Future<String> likePost(String postId, String uid, List likes) async {
-    String res = "Some error occurred";
-    try {
-      if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
-        firebaseFirestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid])
-        });
-      } else {
-        // else we need to add uid to the likes array
-        firebaseFirestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid])
-        });
-      }
-      res = 'success';
-    } catch (err) {
-      res = err.toString();
-    }
-    return res;
-  }
    // post comments 
 
    Future<String> postComment(
@@ -75,6 +53,7 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
         if(text.isNotEmpty){
           await firebaseFirestore.collection('posts').doc(postId).collection('comments').doc(commentId).set({
             'postId':postId,
+            'commentId':commentId,
             'text':text,
             'name':name,
             'uid':uid,
@@ -92,5 +71,64 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
       return result;
    }
+   
+ Future<String> postLike(
+  String postId,
+  String id,
+  List likes,
+) async{
+   String result = 'Something error occupied';
+    try{
+      if(likes.contains(id)){
+       final DocumentReference documentReference = FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postId);
+       await documentReference.update({
+        'likes':FieldValue.arrayRemove([id])
+      });
+      }else{
+        final DocumentReference documentReference = FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postId);
+       await documentReference.update({
+        'likes':FieldValue.arrayUnion([id]),
+      });
+      }
+      result ='Success';
+    }catch(e){
+      print(e.toString());
+    }
+    return result;
+ }
 
+ // comment likes
+
+ Future<String> commentLikes(
+  String postId, 
+  String commentId,
+  String uid, 
+  List likes
+  )async{
+    String result ='Something error occupied';
+   try{
+     if(likes.contains(uid)){
+       final DocumentReference documentReference = firebaseFirestore.collection('posts').doc(postId).collection('comments').doc(commentId);
+
+       await documentReference.update({'likes' :FieldValue.arrayRemove([uid])});
+     }else{
+      final DocumentReference documentReference = firebaseFirestore.collection('posts').doc(postId).collection('comments').doc(commentId);
+      await documentReference.update({'likes' : FieldValue.arrayUnion([uid])});
+
+     }
+     return result;
+   }catch(e){
+    print(e);
+   }
+   return result;
+ }
 } 
+
+
+
+
+

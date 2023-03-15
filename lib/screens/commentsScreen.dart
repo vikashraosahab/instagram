@@ -27,7 +27,7 @@ class CommentScreenState extends State<CommentsScreen>{
         getData();
       }
 
-     getData() async{
+     Future<void> getData() async{
         DocumentSnapshot snap = await firebaseFirestore.collection('user').doc(FirebaseAuth.instance.currentUser!.uid).get();
 
         setState(() {
@@ -43,7 +43,7 @@ class CommentScreenState extends State<CommentsScreen>{
         commentController.text, 
         name, 
         uid, 
-        profileImg
+        profileImg,
       );
      if(result =='Success'){
        print('Success');

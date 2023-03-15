@@ -8,7 +8,7 @@ class Post{
    final String username;
    final String postId;
    final String postUrl;
-   final List likes;
+    List likes;
    final String profileImage;
 
     Post({

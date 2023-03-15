@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/resources/firebase_firestore.dart';
 import 'package:instagram/screens/commentsScreen.dart';
+import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 
 
@@ -22,6 +23,7 @@ class PostCardState extends State<PostCard>{
   String profile = '';
   String username ='';
   String uid = '';
+  bool isLoading =false;
 
     
     @override 
@@ -40,19 +42,23 @@ class PostCardState extends State<PostCard>{
          });
       }
 
-      Future<void> liked() async{
-          String result = await FirestoreMethods().likePost(
-            widget.snap['postId'].toString(),
-            uid, 
-            widget.snap['likes'],
-          );
-
-          if(result =='Success'){
-            print('success');
-          }else{
-            print(result);
-          }
+      Future<void> liked(postId,id,likes)async{
+        setState(() {
+           isLoading =true;
+        });
+          String result = await FirestoreMethods().postLike(postId, id, likes);
+        
+         if(result =='Success'){
+           setState(() {
+             isLoading = false;
+           });
+         }else{
+          setState(() {
+             isLoading = false;
+          });
+         }
       }
+
    @override
   Widget build(BuildContext context) {
     return Container(
@@ -99,15 +105,53 @@ class PostCardState extends State<PostCard>{
            )
           ),
           const SizedBox(height:15),
-          Container(
-            padding:const EdgeInsets.all(1),
-            child:Image.network(
-              widget.snap['postUrl'].toString(),
-              width:double.infinity,
-              height:400,
-            
+          GestureDetector(
+            onDoubleTap:()async{
+               await FirestoreMethods().postLike(
+                widget.snap['postId'], 
+                uid, 
+                widget.snap['likes']
+              );
+
+              setState(() {
+                isLoading =true;
+              });
+              
+            },
+            child:Stack(
+            alignment:Alignment.center,
+            children: [
+              SizedBox(
+               width:double.infinity,
+               height:MediaQuery.of(context).size.height * 0.35,
+               child:Container(
+               padding:const EdgeInsets.all(1),
+              child:Image.network(
+                widget.snap['postUrl'].toString(),
+                fit:BoxFit.cover,
+              ))),
+              AnimatedOpacity(
+                opacity:isLoading ? 1 : 0, 
+                duration:const Duration(microseconds:600),
+                child:LikeAnimation(
+                  animation:isLoading, 
+                  duration:const Duration(milliseconds:600), 
+                  onEnd:(){
+                    setState(() {
+                      isLoading =false;
+                    });
+                  }, 
+                  smallLike:true,
+                  child:const Icon(
+                    Icons.favorite_border,
+                    color:Colors.white,
+                    size:66,
+                    ), 
+                  
+                ),
               ),
-          ),
+            ],
+          )),
           const SizedBox(height:5),
           Container(
             margin:const EdgeInsets.symmetric(horizontal:10),
@@ -116,8 +160,9 @@ class PostCardState extends State<PostCard>{
               mainAxisAlignment:MainAxisAlignment.spaceEvenly,
               children: [
                   IconButton(
-                    onPressed:liked,
-                    icon:const Icon(Icons.favorite_border_outlined,
+                    onPressed:()=>liked(widget.snap['postId'],uid,widget.snap['likes']),
+                    icon: Icon(Icons.favorite_rounded,
+                    color:widget.snap['likes'].contains(uid) ? Colors.red : Colors.white,
                     size:30,
                   )),
                   const SizedBox(width:10),
@@ -149,7 +194,9 @@ class PostCardState extends State<PostCard>{
             child:Column(
               crossAxisAlignment:CrossAxisAlignment.start,
               children: [
-                const Text('5,161 likes'),
+                Text(
+                 "${widget.snap['likes'].length} likes"
+                ),
                 const SizedBox(height:5),
                 Text('${widget.snap['username']}  ${widget.snap['description']}',style:const TextStyle(
                   fontSize:18,
