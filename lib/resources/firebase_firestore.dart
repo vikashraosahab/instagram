@@ -30,7 +30,7 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
         likes:[],
         profileImage:profile
       );
-    firebaseFirestore.collection('posts').doc(postId).set(post.toJson());
+    firebaseFirestore.collection('posts').doc(uid).set(post.toJson());
     result ='Success';
      }catch(e){
        print(e.toString());
@@ -82,14 +82,14 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       if(likes.contains(id)){
        final DocumentReference documentReference = FirebaseFirestore.instance
           .collection('posts')
-          .doc(postId);
+          .doc(id);
        await documentReference.update({
         'likes':FieldValue.arrayRemove([id])
       });
       }else{
         final DocumentReference documentReference = FirebaseFirestore.instance
           .collection('posts')
-          .doc(postId);
+          .doc(id);
        await documentReference.update({
         'likes':FieldValue.arrayUnion([id]),
       });
@@ -99,6 +99,21 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       print(e.toString());
     }
     return result;
+ }
+
+ //post delete
+
+ Future<String> delePost(String postId)async{
+  String result = 'Something occupied error';
+   try{
+      await firebaseFirestore.collection('posts').doc(postId).delete();
+
+      result = 'Success';
+   }catch(e){
+    print(e.toString());
+   }
+
+   return result;
  }
 
  // comment likes

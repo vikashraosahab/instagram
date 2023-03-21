@@ -59,6 +59,17 @@ class PostCardState extends State<PostCard>{
          }
       }
 
+
+    Future<void> deletedPost(String postId) async{
+       try{
+         await FirestoreMethods().delePost(postId);
+       }catch(e){
+        print(e.toString());
+       }
+
+     // ignore: use_build_context_synchronously
+     Navigator.of(context).pop();
+    }
    @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,18 +103,37 @@ class PostCardState extends State<PostCard>{
                 ),
               ),
               Flexible(flex:2,child:Container()),
-              Align(
-                alignment:Alignment.topLeft,
-               child:IconButton(
-                onPressed:(){}, 
-                icon:const Icon(
-                  Icons.more_vert_rounded,
-                  size:24,
-               )),
-              )
-            ],
-           )
-          ),
+              widget.snap['userId'].toString() == uid ? IconButton(
+                onPressed:(){
+                   showDialog(
+                    useRootNavigator:false,
+                    context:context,
+                     builder:(context){
+                       return Dialog(
+                        child:ListView(
+                          shrinkWrap:true,
+                          children:[
+                            'Delete',
+                          ] .map(
+                            (e)=> InkWell(
+                              child:Container(
+                                padding:const EdgeInsets.symmetric(
+                                  vertical:16
+                                ),
+                                child:const Text('Delete')
+                              ),
+                               onTap:()=>deletedPost(widget.snap['userId'].toString()),
+                            )
+                          
+                          ).toList()
+                        )
+                       );
+                       }
+                     );
+                }, 
+                icon:const Icon(Icons.more_vert_outlined)) : Container(),
+            ]
+           )),
           const SizedBox(height:15),
           GestureDetector(
             onDoubleTap:()async{
