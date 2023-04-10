@@ -30,7 +30,7 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
         likes:[],
         profileImage:profile
       );
-    firebaseFirestore.collection('posts').doc(uid).set(post.toJson());
+    firebaseFirestore.collection('posts').doc(postId).set(post.toJson());
     result ='Success';
      }catch(e){
        print(e.toString());
@@ -82,14 +82,14 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       if(likes.contains(id)){
        final DocumentReference documentReference = FirebaseFirestore.instance
           .collection('posts')
-          .doc(id);
+          .doc(postId);
        await documentReference.update({
         'likes':FieldValue.arrayRemove([id])
       });
       }else{
         final DocumentReference documentReference = FirebaseFirestore.instance
           .collection('posts')
-          .doc(id);
+          .doc(postId);
        await documentReference.update({
         'likes':FieldValue.arrayUnion([id]),
       });

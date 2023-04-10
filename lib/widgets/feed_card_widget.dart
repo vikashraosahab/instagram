@@ -23,7 +23,9 @@ class PostCardState extends State<PostCard>{
   String profile = '';
   String username ='';
   String uid = '';
+  String postId ='';
   bool isLoading =false;
+  int commentLength =0;
 
     
     @override 
@@ -39,6 +41,7 @@ class PostCardState extends State<PostCard>{
             profile = (snap.data()! as Map<String,dynamic>)['photoUrl'];
             username = (snap.data()! as Map<String,dynamic>)['username'];
             uid = (snap.data() ! as Map<String,dynamic>)['uid'];
+            postId =(snap.data()! as Map<String,dynamic>)['postId'];
          });
       }
 
@@ -122,7 +125,7 @@ class PostCardState extends State<PostCard>{
                                 ),
                                 child:const Text('Delete')
                               ),
-                               onTap:()=>deletedPost(widget.snap['userId'].toString()),
+                               onTap:()=>deletedPost(widget.snap['postId'].toString()),
                             )
                           
                           ).toList()
@@ -240,8 +243,8 @@ class PostCardState extends State<PostCard>{
                     onTap:(){
                       Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CommentsScreen(postId:uid, username: username)));
                     },
-                    child:const Text(
-                      'View all 4 comments',style:TextStyle(
+                    child: Text(
+                      'View all comments',style:TextStyle(
                       color:Colors.grey,fontSize:18)),
                   ),
               ],
