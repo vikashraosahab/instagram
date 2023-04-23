@@ -75,6 +75,11 @@ class AuthMethods{
       return result;
    }
 
-}
+  // signOutUser for sign out current user from firebase
+  // it help to log out data from firebase firestore 
+   Future<void> signOutUser()async{
+     await auth.signOut();
+   }
 
+}
 

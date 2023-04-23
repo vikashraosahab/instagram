@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/resources/firebase_firestore.dart';
 import 'package:instagram/screens/commentsScreen.dart';
+import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 
@@ -81,7 +82,12 @@ class PostCardState extends State<PostCard>{
         crossAxisAlignment:CrossAxisAlignment.start,
         mainAxisAlignment:MainAxisAlignment.start,
         children: [
-          Container(
+          InkWell(
+            onTap:(){
+              Navigator.pushReplacement(context,MaterialPageRoute(builder:(go)=> ProfileScreen(
+                uid:widget.snap['userId'])));
+            },
+            child:Container(
             margin:const EdgeInsets.symmetric(horizontal:10),
             child:Row(
               crossAxisAlignment:CrossAxisAlignment.center,
@@ -91,7 +97,7 @@ class PostCardState extends State<PostCard>{
                 radius:25,
                 backgroundColor:Colors.white,
                 backgroundImage:NetworkImage(
-                  widget.snap['profileImg'].toString(),
+                  widget.snap['profileImg'],
                   
                 ),
               ),
@@ -136,7 +142,7 @@ class PostCardState extends State<PostCard>{
                 }, 
                 icon:const Icon(Icons.more_vert_outlined)) : Container(),
             ]
-           )),
+           ))),
           const SizedBox(height:15),
           GestureDetector(
             onDoubleTap:()async{
@@ -241,7 +247,7 @@ class PostCardState extends State<PostCard>{
                 const SizedBox(height:10),
                 GestureDetector(
                     onTap:(){
-                      Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CommentsScreen(postId:uid, username: username)));
+                      Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CommentsScreen(postId:widget.snap['postId'] ,username:widget.snap['username'])));
                     },
                     child: Text(
                       'View all comments',style:TextStyle(

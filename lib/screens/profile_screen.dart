@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/profile_button.dart';
 
@@ -29,7 +30,7 @@ class ProfileScreenState extends State<ProfileScreen>{
          getUserData();
        }
 
-        getUserData() async{
+        Future<void> getUserData() async{
            setState(() {
               isLoading = true;
            });
@@ -38,13 +39,12 @@ class ProfileScreenState extends State<ProfileScreen>{
 
             var postSnap = await firebaseFirestore.collection('posts').where('uid',isEqualTo:FirebaseAuth.instance.currentUser!.uid).get();
              
-             postLength = postSnap.docs.length;
+             setState(() {
+               postLength = postSnap.docs.length;
               userData = userSnap.data()!;
               followers = userSnap.data()!['followers'].length;
               following = userSnap.data()!['following'].lenth;
               isFollowing = userSnap.data()!['followers'].contains(FirebaseAuth.instance.currentUser!.uid);
-             setState(() {
-
              });
            }catch(e){print(e.toString());}
           setState(() {
@@ -90,8 +90,8 @@ class ProfileScreenState extends State<ProfileScreen>{
                           mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                             children: [
                              buildStateColumn(postLength,'Posts'),
-                             buildStateColumn(40, 'Followers'),
-                             buildStateColumn(91, 'Following'),
+                             buildStateColumn(followers, 'Followers'),
+                             buildStateColumn(following, 'Following'),
                           ]),
                           const SizedBox(height:12),
                            Row(
@@ -103,7 +103,9 @@ class ProfileScreenState extends State<ProfileScreen>{
                                 backgroundColor:Colors.blue, 
                                 borderColor:Colors.white, 
                                 textColor:Colors.white,
-                                function:(){})
+                                function:() async{
+                                  await AuthMethods().signOutUser();
+                                })
                               : isFollowing ? const ProfileButton(
                                 textValue:'Follow', 
                                 backgroundColor:Colors.blue, 
@@ -140,7 +142,7 @@ class ProfileScreenState extends State<ProfileScreen>{
           ),
         const Divider(),
         FutureBuilder(
-          future:firebaseFirestore.collection('posts').where('uid',isEqualTo:widget.uid).get(),
+          future:firebaseFirestore.collection('posts').get(),
           builder:(context,snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return Center(child:CircularProgressIndicator());
@@ -152,7 +154,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 5,
-                        mainAxisSpacing: 1.5,
+                        mainAxisSpacing: 5,
                         childAspectRatio: 1,
                       ),
                       itemBuilder: (context, index) {
