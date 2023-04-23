@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/resources/auth_methods.dart';
 import '../utils/colors.dart';
 import '../widgets/feed_card_widget.dart';
 
@@ -23,8 +24,8 @@ class HomeScreenState extends State<HomeScreen>{
          ),
          actions: [
           IconButton(
-          onPressed:(){
-           
+          onPressed:() async{
+            await AuthMethods().signOutUser();
           }, 
           icon:const Icon(Icons.favorite_border_outlined)),
           IconButton(

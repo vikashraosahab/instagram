@@ -33,6 +33,7 @@ class PostCardState extends State<PostCard>{
      void initState(){
       super.initState();
        getUserData();
+       fetchCommentLength();
      }
 
       getUserData () async{
@@ -73,6 +74,15 @@ class PostCardState extends State<PostCard>{
 
      // ignore: use_build_context_synchronously
      Navigator.of(context).pop();
+    }
+
+    fetchCommentLength() async{
+        try{
+         QuerySnapshot snap = await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postId']).collection('comments').get();
+          setState(() {
+            commentLength = snap.docs.length;
+          });
+        }catch(e){}
     }
    @override
   Widget build(BuildContext context) {
@@ -206,7 +216,9 @@ class PostCardState extends State<PostCard>{
                   )),
                   const SizedBox(width:10),
                   IconButton(
-                    onPressed:(){}, 
+                    onPressed:(){
+                      Navigator.push(context,MaterialPageRoute(builder: (go)=> CommentsScreen(postId:widget.snap['postId'], username:widget.snap['username'])));
+                    }, 
                     icon:const Icon(Icons.comment_bank_outlined,
                     size:30,
                   )),
@@ -250,7 +262,7 @@ class PostCardState extends State<PostCard>{
                       Navigator.of(context).push(MaterialPageRoute(builder:(context)=>CommentsScreen(postId:widget.snap['postId'] ,username:widget.snap['username'])));
                     },
                     child: Text(
-                      'View all comments',style:TextStyle(
+                      'View all ${commentLength} comments',style:TextStyle(
                       color:Colors.grey,fontSize:18)),
                   ),
               ],

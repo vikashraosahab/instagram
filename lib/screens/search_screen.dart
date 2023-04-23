@@ -88,7 +88,9 @@ class SearchScreenState extends State<SearchScreen>{
           ).orderBy('datePublished').get(),
         builder:(context,snapshot){
            if(!snapshot.hasData){
-             return const CircularProgressIndicator(color:Colors.white);
+             return const CircularProgressIndicator(
+              color:Colors.white
+            );
            }
            return  GridView.custom(
   gridDelegate: SliverQuiltedGridDelegate(
@@ -105,10 +107,19 @@ class SearchScreenState extends State<SearchScreen>{
     ],
   ),
   childrenDelegate: SliverChildBuilderDelegate(
-    (context, index) => 
-    Container(
-      margin:const EdgeInsets.symmetric(vertical:10),
-      child:Image.network((snapshot.data! as dynamic).docs[index]['postUrl'])),
+    (context, index) =>
+    
+     InkWell(
+      onTap:(){
+        Navigator.push(context,MaterialPageRoute(builder:(go)=> ProfileScreen(uid:(snapshot.data! as dynamic).docs[index]['userId'])));
+      },
+      child:Container(
+      margin:const EdgeInsets.symmetric(vertical:1),
+      child:Image.network(
+        
+        (snapshot.data! as dynamic).docs[index]['postUrl']),
+      
+        )),
       childCount:(snapshot.data! as dynamic).docs.length,
         ),
          );

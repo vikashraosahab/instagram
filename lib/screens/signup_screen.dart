@@ -38,13 +38,14 @@ class SignUpScreenState extends State<SignUpScreen>{
         isLoading =true;
       });
      String result = await AuthMethods().signUpUser(
-        name:signUpNameController.text, 
-        email:signUpEmailContorller.text, 
-        password:signUpPasswordContter.text,
-        username:signUpUsernameController.text,
-        photoUrl:image!,
+      name:signUpNameController.text, 
+      email:signUpEmailContorller.text, 
+      password:signUpPasswordContter.text, 
+      username:signUpUsernameController.text, 
+      photoUrl:image!, 
+      follower:[], 
+      following:[]
       );
-
       if(result =='Success'){
          setState(() {
             isLoading = false;

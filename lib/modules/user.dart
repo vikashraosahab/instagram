@@ -1,6 +1,4 @@
 
-import 'package:flutter/material.dart';
-
 class User{
   final String uid;
   final String name;
@@ -8,6 +6,8 @@ class User{
   final String password;
   final String username;
   final String image;
+  final List follower;
+  final List following;
 
    User({
     required this.uid,
@@ -16,6 +16,8 @@ class User{
     required this.password,
     required this.username,
     required this.image,
+    required this.follower,
+    required this.following,
    });
 
   Map <String,dynamic> toJson()=>{
@@ -25,5 +27,8 @@ class User{
      "password":password,
      'username':username,
      'photoUrl':image,
+     'follower':follower,
+     'following':following,
   };
+  
 }

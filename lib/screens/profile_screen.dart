@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/resources/firebase_firestore.dart';
+import 'package:instagram/screens/Follower_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/profile_button.dart';
 
@@ -20,9 +22,9 @@ class ProfileScreenState extends State<ProfileScreen>{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   dynamic userData = [];
   int postLength = 0;
-  int followers = 0;
+  int follower = 0;
   int following = 0;
-  bool isFollowing = false;
+  bool isFollowing = true;
   bool isLoading = false;
      @override 
        void initState(){
@@ -42,9 +44,11 @@ class ProfileScreenState extends State<ProfileScreen>{
              setState(() {
                postLength = postSnap.docs.length;
               userData = userSnap.data()!;
-              followers = userSnap.data()!['followers'].length;
-              following = userSnap.data()!['following'].lenth;
-              isFollowing = userSnap.data()!['followers'].contains(FirebaseAuth.instance.currentUser!.uid);
+              follower = userSnap.data()!['follower'].length;
+              following = userSnap.data()!['following'].length;
+              isFollowing = userSnap.data()!['followers'].contains(
+                FirebaseAuth.instance.currentUser!.uid
+              );
              });
            }catch(e){print(e.toString());}
           setState(() {
@@ -90,7 +94,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                           mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                             children: [
                              buildStateColumn(postLength,'Posts'),
-                             buildStateColumn(followers, 'Followers'),
+                             buildStateColumn(follower, 'Followers'),
                              buildStateColumn(following, 'Following'),
                           ]),
                           const SizedBox(height:12),
@@ -103,15 +107,34 @@ class ProfileScreenState extends State<ProfileScreen>{
                                 backgroundColor:Colors.blue, 
                                 borderColor:Colors.white, 
                                 textColor:Colors.white,
-                                function:() async{
-                                  await AuthMethods().signOutUser();
+                                function:(){
+                                
                                 })
-                              : isFollowing ? const ProfileButton(
-                                textValue:'Follow', 
+                              : isFollowing == true ? ProfileButton(
+                                textValue:'Follow',
+                                function:() async{
+                                   await FirestoreMethods().follower(
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                    userData['uid'],
+                                  );
+                                  setState(() {
+                                    isFollowing = true;
+                                  });
+                                },
                                 backgroundColor:Colors.blue, 
                                 borderColor:Colors.white, 
-                                textColor:Colors.white) : const ProfileButton(
+                                textColor:Colors.white) : 
+                                 ProfileButton(
                                 textValue:'Unfollow', 
+                                function:() async{
+                                  await FirestoreMethods().follower(
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                    userData['uid'],
+                                  );
+                                  setState(() {
+                                     isFollowing = false;
+                                  });
+                                },
                                 backgroundColor:Colors.white, 
                                 borderColor:Colors.blue, 
                                 textColor:Colors.blue) ,

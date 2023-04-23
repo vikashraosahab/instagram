@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../modules/user.dart' as Module;
 import '../modules/post.dart' as Module;
 import '../resources/storage_methods.dart';
@@ -20,6 +21,8 @@ class AuthMethods{
         required String password,
         required String username,
         required Uint8List photoUrl,
+        required List follower,
+        required List following,
       })async {
         String result ='Something error occupied';
         try{
@@ -35,6 +38,8 @@ class AuthMethods{
               password: password, 
               username: username,
               image:images,
+              follower:[],
+              following:[],
             );
 
              await firebaseFirestore.collection('user').doc(auth.currentUser!.uid).set(user.toJson());

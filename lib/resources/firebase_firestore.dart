@@ -141,6 +141,38 @@ final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
    }
    return result;
  }
+
+
+ // here we work on following and follower methods in instagram clone
+  Future<void> follower(
+    String uid,
+    String followerId,
+  )async{
+   try{
+    DocumentSnapshot snap = await firebaseFirestore.collection('user').doc(uid).get();
+    List following = (snap.data()! as dynamic)['following'];
+     
+      if(following.contains(followerId)){
+         await firebaseFirestore.collection('user').doc(followerId).update({
+          'follower':FieldValue.arrayRemove([uid]),
+         });
+ 
+        await firebaseFirestore.collection('user').doc(uid).update({
+          'following':FieldValue.arrayRemove([followerId]),
+        });
+        
+      }else{
+        await firebaseFirestore.collection('user').doc(followerId).update({
+         'follower':FieldValue.arrayUnion([uid]),
+        });
+
+        await firebaseFirestore.collection('user').doc(uid).update({
+          'following':FieldValue.arrayUnion([followerId])
+        });
+      }}catch(e){
+        print(e.toString());
+      }
+  }
 } 
 
 
